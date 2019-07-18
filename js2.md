@@ -748,3 +748,178 @@ cookie有哪些特点？
 
 另： cookie直接存中文会造成未知错误，所以一般使用encodeURIComponent()进行编码，decodeURIComponent进行解码
 
+**浏览器的同源策略：**
+
+
+
+​    浏览器安全策略，保障非同源资源之间数据访问的安全性。
+
+​    默认不允许非同源的资源直接访问。
+
+​    URL：
+
+​        协议://域名:端口/路径名称?查询字符串#位置标识符
+
+​    同源：**协议、域名、端口**完全一致，只要三个中有任何一个不一致，则是非同源
+
+
+
+​    非同源资源间需要进行访问，则需要实现跨域。
+
+
+
+解决资源跨域访问：
+
+​    a. CORS
+
+​        cross-origin resource sharing
+
+​        服务器端：
+
+​            设置响应头信息：        Access-Control-Allow-Origin:*
+
+​        前端：
+
+​            ajax
+
+​        可解决GET/POST跨域需求
+
+
+
+​    b. jsonp
+
+        <script src=""></script>
+
+​        利用<script>在引入外部JS时不受同源策略限制的特性，来实现跨域。(src的开放性原则)
+
+​        JSONP只能处理GET请求方式的跨域
+
+
+
+​        后端：
+
+​            由服务器端构建一个字符串：字符串中的内容是能够在 JS 中执行的函数调用的结构
+
+​        前端：
+
+​            \1. 创建 <script> 元素
+
+​            \2. 设置 src 属性，传递 callback 参数指明全局回调函数的名称
+
+​            \3. 添加到 body 中
+
+​            \4. 创建全局函数，用于处理响应数据
+
+​            \5. 删除 <script> 元素
+
+
+
+​    c.   ..........
+
+
+
+JSONP接口：
+
+​    百度：<https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=>关键字&cb=回调函数名
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## **promise（ES6）**
+
+
+
+​    承诺：服务员承诺会把菜端上来
+
+
+
+​    承诺：--->  兑现 （resolve）  或  失信（rejected）
+
+
+
+​    这个对象有三种状态：Pending（进行中）、Resolved（已完成，又称 Fulfilled）和 Rejected（已失败）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。这也是 Promise 这个名字的由来，它的英语意思就是「承诺」，表示其他手段无法改变。
+
+
+
+
+
+
+
+Promise对象(ES6)：
+
+​    用于表示一个异步操作的最终状态（完成或失败），以及其返回的值。它允许你为异步操作的成功和失败分别绑定相应的处理方法。这让异步方法可以像同步方法那样返回值，但并不是立即返回最终执行结果，而是一个能代表未来出现的结果的promise对象。
+
+​    一个 Promise有以下几种状态:
+
+​        pending: 初始状态，既不是成功，也不是失败状态。
+
+​        fulfilled: 意味着操作成功完成。
+
+​        rejected: 意味着操作失败。
+
+
+
+​    创建Promise对象：
+
+​        var promise = new Promise( executor );
+
+​            executor: 是一个函数，该函数在创建Promise对象的同时被调用执行。
+
+​            executor:
+
+​                语法：function(resolve, reject) {...}
+
+​                --resolve：将Promise对象状态修改为 fulfilled，可以传递参数到then方法的第一个函数中
+
+​                --reject：将Promise对象状态修改为 rejected，可以传递参数到 then 方法的第二个函数中
+
+
+
+​    API：
+
+​        Promise.prototype.then(onfulfilled, onrejected) 方法：
+
+​            -- onfulfilled 绑定的是成功时执行的函数
+
+​            -- onrejected 绑定的是失败时执行的函数
+
+
+
+​        Promise.all(iterable)
+
+​            -- iterable : 可迭代对象（数组）
+
+​            -- 返回Promise对象
+
+​            -- 当数组中所有Promise对象都完成时，回调执行成功的函数，当只要有一个执行失败时，就回调执行失败的函数。
+
+
+
+var promise1 = Promise.resolve(3);
+
+var promise2 = 42;
+
+var promise3 = new Promise(function(resolve, reject) {
+
+  setTimeout(resolve, 100, 'foo');
+
+});
+
+
+
+Promise.all([promise1, promise2, promise3]).then(function(values) {
+
+  console.log(values);
+
+});
